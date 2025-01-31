@@ -23,6 +23,8 @@ namespace CCI.Selenium.Technical.IntegrationTests
         private readonly By _successMessageXpath = By.XPath("//h2[contains(@data-test, 'complete-header')]");
         private readonly By _removeBackpackCartXpath = By.XPath("//button[contains(@data-test, 'remove-sauce-labs-backpack')]");
         private readonly By _continueShoppingXpath = By.XPath("//button[contains(@data-test, 'continue-shopping')]");
+        private readonly By _productSortContiner = By.CssSelector("[class='product_sort_container']");
+        private readonly By _priceHiloSort = By.CssSelector("[value='hilo']");
         
 
         [SetUp]
@@ -110,8 +112,32 @@ namespace CCI.Selenium.Technical.IntegrationTests
         public void FilterProducts()
         {
             //navigate to products
+            string username = "standard_user";
+            string password = "secret_sauce";
+            IWebElement usernameInput = driver.FindElement(_usernameInputXpath);
+            IWebElement passwordInput = driver.FindElement(_passwordInputXpath);
+            IWebElement loginButton = driver.FindElement(_loginButtonXpath);
+
+            usernameInput.SendKeys(username);
+            passwordInput.SendKeys(password);
+            loginButton.Click();
+            driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(10);
             //filter products
+            IWebElement productSort = driver.FindElement(_productSortContiner);
+            productSort.Click();
+
+            IWebElement hiLoSort = driver.FindElement(_priceHiloSort);
+            hiLoSort.Click();
+
+            Thread.Sleep(5000);
+
+            //find all inventory_item in inventory_list
+            var inventoryList = driver.FindElements(By.CssSelector("[class='inventory_item']"));
+            //get name of first item on page
+            string jacketItem = inventoryList[0].Text;
+            string jacketName = jacketItem.Substring(0, 24);
             //assert
+            Assert.That(jacketName, Is.EqualTo("Sauce Labs Fleece Jacket"));
         }
 
         [TearDown]

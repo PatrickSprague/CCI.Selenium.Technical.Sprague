@@ -13,6 +13,7 @@ namespace CCI.Selenium.Technical.IntegrationTests
         private readonly By _passwordInputXpath = By.XPath("//input[contains(@id, 'password')]");
         private readonly By _loginButtonXpath = By.XPath("//input[contains(@class, 'submit-button')]");
         private readonly By _addBackpackCartXpath = By.XPath("//button[contains(@data-test, 'add-to-cart-sauce-labs-backpack')]");
+        private readonly By _addBikeLightCartXpath = By.XPath("//button[contains(@data-test, 'add-to-cart-sauce-labs-bike-light')]");
         private readonly By _shoppingCartXpath = By.XPath("//div[contains(@id, 'shopping_cart_container')]");
         private readonly By _checkoutXpath = By.XPath("//button[contains(@data-test, 'checkout')]");
         private readonly By _firstNameXpath = By.XPath("//input[contains(@id, 'first-name')]");
@@ -47,11 +48,11 @@ namespace CCI.Selenium.Technical.IntegrationTests
             IWebElement passwordInput = driver.FindElement(_passwordInputXpath);
             IWebElement loginButton = driver.FindElement(_loginButtonXpath);
 
+            //login
             usernameInput.SendKeys(username);
             passwordInput.SendKeys(password);
             loginButton.Click();
             driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(10);
-
             //add backpack to cart
             IWebElement addBackpackCart = driver.FindElement(_addBackpackCartXpath);
             addBackpackCart.Click();
@@ -86,6 +87,7 @@ namespace CCI.Selenium.Technical.IntegrationTests
             IWebElement passwordInput = driver.FindElement(_passwordInputXpath);
             IWebElement loginButton = driver.FindElement(_loginButtonXpath);
 
+            //login
             usernameInput.SendKeys(username);
             passwordInput.SendKeys(password);
             loginButton.Click();
@@ -105,7 +107,6 @@ namespace CCI.Selenium.Technical.IntegrationTests
             continueShopping.Click();
             //assert
             Assert.That(driver.FindElement(_addBackpackCartXpath).Displayed, Is.True);
-            
         }
 
         [Test]
@@ -134,6 +135,34 @@ namespace CCI.Selenium.Technical.IntegrationTests
             string jacketName = jacketItem.Substring(0, 24);
             //assert
             Assert.That(jacketName, Is.EqualTo("Sauce Labs Fleece Jacket"));
+        }
+
+        [Test]
+        public void GivenLoggedInUser_WhenMultipleItemsInCart_ThenCartBadgeCorrect()
+        {
+            string username = "standard_user";
+            string password = "secret_sauce";
+            IWebElement usernameInput = driver.FindElement(_usernameInputXpath);
+            IWebElement passwordInput = driver.FindElement(_passwordInputXpath);
+            IWebElement loginButton = driver.FindElement(_loginButtonXpath);
+
+            //login
+            usernameInput.SendKeys(username);
+            passwordInput.SendKeys(password);
+            loginButton.Click();
+            driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(10);
+
+            //add backpack to cart
+            IWebElement addBackpackCart = driver.FindElement(_addBackpackCartXpath);
+            addBackpackCart.Click();
+            //add bike light to cart
+            IWebElement addBikeLightCart = driver.FindElement(_addBikeLightCartXpath);
+            addBikeLightCart.Click();
+            //verify icon count
+            IWebElement shoppingCartBadge = driver.FindElement(_shoppingCartXpath);
+            string badge = shoppingCartBadge.Text;
+            //assert
+            Assert.That(badge, Is.EqualTo("2"));
         }
 
         [TearDown]

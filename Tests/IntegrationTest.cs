@@ -125,12 +125,8 @@ namespace CCI.Selenium.Technical.IntegrationTests
             //filter products
             IWebElement productSort = driver.FindElement(_productSortContiner);
             productSort.Click();
-
             IWebElement hiLoSort = driver.FindElement(_priceHiloSort);
             hiLoSort.Click();
-
-            Thread.Sleep(5000);
-
             //find all inventory_item in inventory_list
             var inventoryList = driver.FindElements(By.CssSelector("[class='inventory_item']"));
             //get name of first item on page

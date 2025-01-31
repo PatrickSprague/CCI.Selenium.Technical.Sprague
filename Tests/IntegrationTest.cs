@@ -36,7 +36,7 @@ namespace CCI.Selenium.Technical.IntegrationTests
         }
 
         [Test]
-        public void OrderBackpack()
+        public void GivenUserLoggedIn_WhenOrderBackpack_ThenThankYouMessage()
         {
             string username = "standard_user";
             string password = "secret_sauce";
@@ -78,7 +78,7 @@ namespace CCI.Selenium.Technical.IntegrationTests
         }
 
         [Test]
-        public void RemoveBackpackFromCart()
+        public void GivenBackpackInCart_WhenRemoved_ThenCanBeAddedAgain()
         {
             string username = "standard_user";
             string password = "secret_sauce";
@@ -109,7 +109,7 @@ namespace CCI.Selenium.Technical.IntegrationTests
         }
 
         [Test]
-        public void FilterProducts()
+        public void GivenLoggedInUser_WhenFilterByPriceHi_ThenJacketFirstItem()
         {
             //navigate to products
             string username = "standard_user";
